@@ -4,6 +4,7 @@ import ImageGallery from "./ImageGallery.jsx";
 import { useContext } from "react";
 import AppContext from "../../context/AppContext";
 import Image from "./Image";
+import { Link } from "react-router-dom";
 
 const Home = (props)=>{
     const inputRef = useRef();
@@ -16,15 +17,15 @@ const Home = (props)=>{
     return <div>
         <Nav />
         
-        <div className="flex px-8 py-4">
+        <div className="flex items-center px-8 py-4">
             <h1 className="flex-1 text-2xl text-black">Gallery</h1>
-            <form onSubmit={searchTag}>
-                <div className="">
-                    <input ref={inputRef} className="border border-gray-200 px-4 py-3 " type="text" name="" id="" placeholder="Search Tag"/>
+            <form className="flex" onSubmit={searchTag}>
+                <div className="ml-auto w-2/3">
+                    <input ref={inputRef} className="border w-full border-gray-200 px-4 py-3 " type="text" name="" id="" placeholder="Search Tag"/>
                 </div>
             </form>
         </div>
-        {!authState.user ? <p className="mx-6 text-red-400 border border-red-200 rounded-lg py-4 px-6">Log in to use the drag and drop functionality</p> : ''}
+        {!authState.user ? <p className="mx-6 text-red-400 border border-red-200 rounded-lg py-4 px-6"> <Link className="underline" to='/signIn'>Log in</Link> to use the drag and drop functionality</p> : ''}
         {!authState.user ? (
             <div className="customGrid py-3 px-6">
                 {authState.displayImages.map((image, index)=>{

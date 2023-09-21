@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AppContext from "../../context/AppContext";
 import Image from "./Image";
 import ImagesArray from "../../Utils/Images";
@@ -18,6 +18,7 @@ import {
 const ImageGallery = (props) =>{
     const {authState, dispatch} = useContext(AppContext);
     const displayImages = authState.displayImages;
+    const [contextStyle, setContextStyle] = useState(null);
 
     const {setNodeRef} = useDroppable({
         id: 'images-area',
@@ -41,26 +42,31 @@ const ImageGallery = (props) =>{
         mouseSensor,
         touchSensor,
     )
+    const handleDragBegin = (event)=>{
+        setContextStyle(true);
+    }
 
     const handleDragEnd = (event)=>{
         const {active, over} = event;
         const oldIndex = authState.displayImages.findIndex(item=>item.id===active.id);
         const newIndex = authState.displayImages.findIndex(item=>item.id===over.id);
-        const newArray = arrayMove(displayImages, oldIndex, newIndex)
-        console.log(newArray);
+        const updatedArray = arrayMove(displayImages, oldIndex, newIndex)
+        
 
         if (active.id !== over.id){
-            dispatch({type: 'drag', payLoad: newArray});
+            dispatch({type: 'drag', payLoad: updatedArray});
         }
+        setContextStyle(null);
 
     }
     return <DndContext 
     sensors={sensors}
-    onDragEnd={handleDragEnd}>
+    onDragEnd={handleDragEnd}
+    onDragStart={handleDragBegin}>
         <SortableContext 
         items={authState.displayImages} 
         strategy={rectSortingStrategy}>
-            <div className="customGrid py-4 px-6">
+            <div className={`${contextStyle && 'border border-green-500 bg-green-50' } customGrid py-4 px-6`}>
             {authState.displayImages.map(image=>{
                 return <SortableImage key={image.id} id={image.id}>
                     <Image url={image.url} id={image.id} />
