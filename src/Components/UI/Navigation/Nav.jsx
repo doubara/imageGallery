@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { signOut } from "firebase/auth";
 import AppContext from "../../../context/AppContext";
 import { auth } from "../../../Firebase/Firebase";
+import Loader from "../../Loader";
 
 const Nav = (props)=>{
 
@@ -35,6 +36,7 @@ const Nav = (props)=>{
                 
             )}
         </div>
+        {authState.isLoading && <Loader />}
     </nav>
 };
 
