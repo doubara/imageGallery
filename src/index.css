@@ -13,3 +13,8 @@ body {
 *, *::before, *::after{
   box-sizing: border-box;
 }
+.customGrid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
